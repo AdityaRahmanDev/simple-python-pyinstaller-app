@@ -2,15 +2,15 @@
 // Mulai dengan mendefinisikan pipeline
 node {
 
-    stage('Checkout Repository') {
-        checkout scm
-    }
+    // stage('Checkout Repository') {
+    //     checkout scm
+    // }
 
-    stage('Debug Workspace') {
-        echo "Current Working Directory: ${pwd()}"
-        sh 'ls -l'
-        sh 'ls -l sources/'
-    }
+    // stage('Debug Workspace') {
+    //     echo "Current Working Directory: ${pwd()}"
+    //     sh 'ls -l'
+    //     sh 'ls -l sources/'
+    // }
     // Untuk mendefinisikan sebuah stage (tahapan) 'Build' untuk melakukan proses kompilasi kode Python
     stage('Build') {
         // Menggunakan Docker sebagai agent untuk menjalankan pipeline dengan Menggunakan Docker image python:2-alpine sebagai lingkungan untuk menjalankan stage 'Build'
@@ -28,11 +28,11 @@ node {
             sh 'py.test --verbose --junit-xml test-reports/results.xml sources/test_calc.py'
         }
         // Setelah stage 'Test' selesai akan menjalankan Post-action terlepas apakah stage 'Test' berhasil (success) atau gagal (failure)
-        post {
-            always {
-                // Post-action yang selalu dijalankan setelah stage 'Test' selesai akan mempublikasikan laporan JUnit XML.
-                junit 'test-reports/results.xml'
-            }
-        }
+        // post {
+        //     always {
+        //         // Post-action yang selalu dijalankan setelah stage 'Test' selesai akan mempublikasikan laporan JUnit XML.
+        //         junit 'test-reports/results.xml'
+        //     }
+        // }
     }
 }
