@@ -1,6 +1,16 @@
 // Membuat Jenkins Pipeline dengan Scripted Pipeline
 // Mulai dengan mendefinisikan pipeline
 node {
+
+    stage('Checkout Repository') {
+        checkout scm
+    }
+
+    stage('Debug Workspace') {
+        echo "Current Working Directory: ${pwd()}"
+        sh 'ls -l'
+        sh 'ls -l sources/'
+    }
     // Untuk mendefinisikan sebuah stage (tahapan) 'Build' untuk melakukan proses kompilasi kode Python
     stage('Build') {
         // Menggunakan Docker sebagai agent untuk menjalankan pipeline dengan Menggunakan Docker image python:2-alpine sebagai lingkungan untuk menjalankan stage 'Build'
