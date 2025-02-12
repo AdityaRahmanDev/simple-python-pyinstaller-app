@@ -6,7 +6,7 @@ node {
         // Menggunakan Docker sebagai agent untuk menjalankan pipeline dengan Menggunakan Docker image python:2-alpine sebagai lingkungan untuk menjalankan stage 'Build'
         docker.image('python:2-alpine').inside {
             // Menjalankan perintah shell untuk mengkompilasi file Python add2vals.py dan calc.py
-            sh 'python -m py_compile /home/OneDrive/Documents/LabDicoding/simple-python-pyinstaller-app/sources/add2vals.py /home/OneDrive/Documents/LabDicoding/simple-python-pyinstaller-app/sources/calc.py'
+            sh 'python -m py_compile ./sources/add2vals.py ./sources/calc.py'
         }
     }
 
