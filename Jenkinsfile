@@ -55,12 +55,7 @@ pipeline {
             }
             steps {
                 dir('sources') {  // Pindah ke directory sources
-                sh 'pyinstaller --onefile add2vals.py'
-                }
-            }
-            post {
-                success {
-                    archiveArtifacts 'dist/add2vals'
+                sh 'pyinstaller add2vals.py'
                 }
             }
         }
