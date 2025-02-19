@@ -45,7 +45,6 @@ pipeline {
             steps {
                 sh '''
                     echo "Installing pip..."
-                    apt-get update
                     apt-get install -y python-pip
                     
                     echo "Installing pyinstaller..."
