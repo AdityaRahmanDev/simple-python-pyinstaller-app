@@ -44,6 +44,9 @@ pipeline {
             }
             steps {
                 sh '''
+                    echo "Installing pip..."
+                    apk add --no-cache python2-dev py2-pip
+                    
                     echo "Installing pyinstaller..."
                     pip install pyinstaller
                     
