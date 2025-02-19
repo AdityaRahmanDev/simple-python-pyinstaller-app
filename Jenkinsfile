@@ -51,7 +51,6 @@ pipeline {
             agent {
                 docker {
                     image 'cdrx/pyinstaller-linux:python2'
-                    args '-w /workspace'
                 }
             }
             steps {
