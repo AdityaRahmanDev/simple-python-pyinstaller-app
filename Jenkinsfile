@@ -27,8 +27,26 @@ node {
         }
     }
     stage('Deploy') {
-        docker.image('cdrx/pyinstaller-linux:python2').inside{
-            sh 'pyinstaller --onefile sources/add2vals.py'
+        // Create a custom workspace for PyInstaller
+        def workspace = pwd()
+        
+        // Use custom options for better container management
+        docker.image('cdrx/pyinstaller-linux:python2').inside("-v ${workspace}:${workspace}") {
+            // Ensure we're in the correct directory
+            dir(workspace) {
+                // Add error handling and logging
+                try {
+                    sh '''
+                        echo "Starting PyInstaller build..."
+                        pyinstaller --onefile sources/add2vals.py
+                        echo "PyInstaller build completed"
+                        ls -l dist/
+                    '''
+                } catch (Exception e) {
+                    echo "PyInstaller build failed: ${e.getMessage()}"
+                    throw e
+                }
+            }
         }
     }
 }
