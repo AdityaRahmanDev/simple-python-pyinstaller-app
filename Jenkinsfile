@@ -27,20 +27,24 @@ node {
         }
     }
     stage('Deploy') {
-        def workspace = pwd()
-        
-        // Perbaikan konfigurasi Docker untuk menghindari duplikasi mount point
-        docker.image('cdrx/pyinstaller-linux:python2').inside {
-            // Menambahkan error handling
+        // Menggunakan agent Docker dengan konfigurasi yang lebih sederhana
+        docker.image('cdrx/pyinstaller-linux:python2').inside('--privileged') {
             try {
-                sh '''
+                sh '''#!/bin/bash
+                    # Memastikan direktori kerja yang benar
+                    pwd
+                    ls -la
+                    
+                    # Menjalankan PyInstaller
                     echo "Starting PyInstaller build..."
-                    pyinstaller --onefile sources/add2vals.py
-                    echo "PyInstaller build completed"
+                    python -m PyInstaller --onefile sources/add2vals.py
+                    
+                    # Verifikasi hasil build
+                    echo "Checking build results..."
                     ls -l dist/
                 '''
             } catch (Exception e) {
-                echo "PyInstaller build failed: ${e.getMessage()}"
+                echo "Build failed: ${e.getMessage()}"
                 throw e
             }
         }
