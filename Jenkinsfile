@@ -48,28 +48,25 @@ pipeline {
             }
         }
        stage('Deliver') {
-            agent {
-                docker {
-                    image 'cdrx/pyinstaller-linux:python2'
-                    args '--privileged'  // Tambahkan privileged untuk akses penuh
-                }
-            }
             steps {
-                // Periksa environment
-                sh '''
-                    echo "Checking environment..."
-                    pwd
-                    ls -la
-                    python --version
-                '''
-                
-                // Jalankan pyinstaller dengan path absolut
-                sh 'pyinstaller --onefile ${WORKSPACE}/sources/add2vals.py'
-            }
-            post {
-                success {
-                    archiveArtifacts 'dist/add2vals'
+                script {
+                    // Gunakan docker.image().inside() pattern
+                    docker.image('cdrx/pyinstaller-linux:python2').inside('--privileged') {
+                        sh '''
+                            echo "Current directory:"
+                            pwd
+                            echo "Directory contents:"
+                            ls -la
+                            echo "Python version:"
+                            python --version
+                            
+                            pyinstaller --onefile sources/add2vals.py
+                        '''
+                    }
                 }
+                
+                // Archive artifacts setelah keluar dari container
+                archiveArtifacts artifacts: 'dist/add2vals', fingerprint: true
             }
         }
     }
