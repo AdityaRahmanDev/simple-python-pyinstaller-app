@@ -38,20 +38,12 @@ pipeline {
         stage('Deploy') {
             agent {
                 docker {
-                    image 'python:2.7'
+                    image 'cdrx/pyinstaller-linux:python2'
                     args '-u root'
                 }
             }
             steps {
                 sh '''
-                    echo "Current directory: $PWD"
-                    echo "Listing directory contents:"
-                    ls -la
-                    
-                    echo "Installing PyInstaller..."
-                    python -m pip install --upgrade pip
-                    python -m pip install pyinstaller
-                    
                     echo "Building executable..."
                     pyinstaller --onefile sources/add2vals.py
                     
