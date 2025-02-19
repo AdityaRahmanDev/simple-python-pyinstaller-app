@@ -47,26 +47,22 @@ pipeline {
                 }
             }
         }
-       stage('Deliver') {
-            steps {
-                script {
-                    // Gunakan docker.image().inside() pattern
-                    docker.image('cdrx/pyinstaller-linux:python2').inside('--privileged') {
-                        sh '''
-                            echo "Current directory:"
-                            pwd
-                            echo "Directory contents:"
-                            ls -la
-                            echo "Python version:"
-                            python --version
-                            
-                            pyinstaller --onefile sources/add2vals.py
-                        '''
-                    }
+        stage('Deliver') {
+            agent {
+                docker {
+                    image 'cdrx/pyinstaller-linux:python2'
                 }
-                
-                // Archive artifacts setelah keluar dari container
-                archiveArtifacts artifacts: 'dist/add2vals', fingerprint: true
+            }
+            steps {
+                sh '''
+                    cd sources
+                    python add2vals.py
+                 '''
+            }
+            post {
+                success {
+                    archiveArtifacts 'dist/add2vals'
+                }
             }
         }
     }
