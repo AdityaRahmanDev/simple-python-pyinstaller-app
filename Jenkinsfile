@@ -45,7 +45,8 @@ pipeline {
             steps {
                 sh '''
                     echo "Installing pip..."
-                    apk add --no-cache python2-dev py2-pip
+                    apt-get update
+                    apt-get install -y python-pip
                     
                     echo "Installing pyinstaller..."
                     pip install pyinstaller
