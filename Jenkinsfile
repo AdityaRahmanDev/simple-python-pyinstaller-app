@@ -48,8 +48,7 @@ pipeline {
                     echo "Listing directory contents:"
                     ls -la
                     
-                    echo "Installing pip and PyInstaller..."
-                    apk add --no-cache python2-dev py2-pip
+                    echo "Installing PyInstaller..."
                     pip install --upgrade pip
                     pip install pyinstaller
                     
