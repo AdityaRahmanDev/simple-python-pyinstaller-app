@@ -1,51 +1,67 @@
 // Membuat Jenkins Pipeline dengan Scripted Pipeline
 // Mulai dengan mendefinisikan pipeline
-node {
-    stage('Checkout Repository') {
-        checkout scm
-    }
-
-    stage('Debug Workspace') {
-        echo "Current Working Directory: ${pwd()}"
-        sh 'ls -l'
-        sh 'ls -l sources/'
-    }
-    // Untuk mendefinisikan sebuah stage (tahapan) 'Build' untuk melakukan proses kompilasi kode Python
-    stage('Build') {
-        // Menggunakan Docker sebagai agent untuk menjalankan pipeline dengan Menggunakan Docker image python:2-alpine sebagai lingkungan untuk menjalankan stage 'Build'
-        docker.image('python:2-alpine').inside {
-            // Menjalankan perintah shell untuk mengkompilasi file Python add2vals.py dan calc.py
-            sh 'python -m py_compile sources/add2vals.py sources/calc.py'
+pipeline {
+    agent none
+    
+    stages {
+        stage('Checkout') {
+            agent any
+            steps {
+                checkout scm
+            }
         }
-    }
-    // Untuk mendefinisikan sebuah stage (tahapan) 'Test' untuk menjalankan tes menggunakan pytest
-    stage('Test') {
-        // // Menggunakan Docker sebagai agent untuk menjalankan pipeline dengan Menggunakan Docker image qnib/pytest sebagai lingkungan untuk menjalankan stage 'Test'
-        docker.image('qnib/pytest').inside {
-            // Menjalankan perintah shell untuk menjalankan tes dan menghasilkan laporan JUnit XML
-            sh 'py.test --verbose --junit-xml test-reports/results.xml sources/test_calc.py'
+        
+        stage('Build') {
+            agent {
+                docker {
+                    image 'python:2-alpine'
+                    args '-u root'
+                }
+            }
+            steps {
+                sh 'python -m py_compile sources/add2vals.py sources/calc.py'
+            }
         }
-    }
-    stage('Deploy') {
-        // Menggunakan agent Docker dengan konfigurasi yang lebih sederhana
-        docker.image('cdrx/pyinstaller-linux:python2').inside('--privileged') {
-            try {
-                sh '''#!/bin/bash
-                    # Memastikan direktori kerja yang benar
-                    pwd
+        
+        stage('Test') {
+            agent {
+                docker {
+                    image 'qnib/pytest'
+                    args '-u root'
+                }
+            }
+            steps {
+                sh 'py.test --verbose --junit-xml test-reports/results.xml sources/test_calc.py'
+            }
+        }
+        
+        stage('Deploy') {
+            agent {
+                docker {
+                    image 'cdrx/pyinstaller-linux:python2'
+                    args '-u root'
+                }
+            }
+            steps {
+                sh '''
+                    echo "Current directory: $PWD"
+                    echo "Listing directory contents:"
                     ls -la
                     
-                    # Menjalankan PyInstaller
-                    echo "Starting PyInstaller build..."
-                    python -m PyInstaller --onefile sources/add2vals.py
+                    echo "Installing PyInstaller..."
+                    pip install pyinstaller
                     
-                    # Verifikasi hasil build
-                    echo "Checking build results..."
-                    ls -l dist/
+                    echo "Building executable..."
+                    pyinstaller --onefile sources/add2vals.py
+                    
+                    echo "Listing dist directory:"
+                    ls -la dist/
                 '''
-            } catch (Exception e) {
-                echo "Build failed: ${e.getMessage()}"
-                throw e
+            }
+            post {
+                success {
+                    archiveArtifacts artifacts: 'dist/add2vals', fingerprint: true
+                }
             }
         }
     }
