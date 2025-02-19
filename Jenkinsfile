@@ -51,10 +51,13 @@ pipeline {
             agent {
                 docker {
                     image 'cdrx/pyinstaller-linux:python2'
+                    args '-w /workspace'
                 }
             }
             steps {
-                sh 'pyinstaller --onefile sources/add2vals.py'
+                dir('sources') {  // Pindah ke directory sources
+                sh 'pyinstaller --onefile add2vals.py'
+                }
             }
             post {
                 success {
