@@ -44,6 +44,9 @@ pipeline {
             }
             steps {
                 sh '''
+                    echo "Installing pyinstaller..."
+                    pip install pyinstaller
+                    
                     echo "Building executable..."
                     pyinstaller --onefile sources/add2vals.py
                     
