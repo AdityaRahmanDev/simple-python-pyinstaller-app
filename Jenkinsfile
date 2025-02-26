@@ -1,7 +1,6 @@
 // Membuat Jenkins Pipeline dengan Scripted Pipeline
 node {
     // Mendefinisikan pipeline Jenkins
-    stages {
         // Stage 'Build': Tahap kompilasi kode Python
         stage('Build') {
             // Menggunakan Docker untuk menjalankan build
@@ -50,5 +49,4 @@ node {
                 sh "docker run --rm -v ${VOLUME} ${IMAGE} 'rm -rf build dist'"
             }
         }
-    }
 }
