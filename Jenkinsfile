@@ -41,6 +41,16 @@ node {
                 unstash(name: 'compiled-results')
                 // Membuat executable menggunakan PyInstaller
                 sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'"
+                
+                // Menambahkan pengecekan keberadaan file dist
+                sh """
+                    if [ -d "sources/dist" ]; then
+                        echo "File dist berhasil dibuat"
+                    else
+                        echo "File dist tidak ditemukan"
+                        exit 1
+                    fi
+                """
             }
             
             // Jika berhasil, arsipkan hasil build dan bersihkan direktori
