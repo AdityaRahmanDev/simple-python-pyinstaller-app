@@ -32,8 +32,8 @@ node {
         // Stage 'Deliver': Tahap pembuatan executable
         stage('Deliver') {
             // Mendefinisikan environment variables
-            // def VOLUME = '$(pwd)/sources:/src'
-            // def IMAGE = 'cdrx/pyinstaller-linux:python2'
+            def VOLUME = '$(pwd)/sources:/src'
+            def IMAGE = 'cdrx/pyinstaller-linux:python2'
             
             // Membuat direktori dengan nama BUILD_ID
             dir(path: env.BUILD_ID) {
@@ -41,8 +41,8 @@ node {
                 // Mengambil kembali hasil kompilasi yang telah di-stash
                     // unstash(name: 'compiled-results')
                 // Membuat executable menggunakan PyInstaller
-                    // sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'"
-                    sh 'pyinstaller --onefile sources/add2vals.py'
+                    sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'"
+                    // sh 'pyinstaller --onefile sources/add2vals.py'
                     
                 
                 // Menambahkan pengecekan keberadaan file dist
