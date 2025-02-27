@@ -55,7 +55,7 @@ node {
                 // Menambahkan pengecekan keberadaan file dist
                     sh "ls -la sources/dist"
 
-                    sh "cd source/dist"
+                    sh "cd sources/dist"
                     
                     archiveArtifacts "add2vals"
 
