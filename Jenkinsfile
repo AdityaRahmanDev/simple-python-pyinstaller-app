@@ -62,24 +62,14 @@ node {
                     
                     archiveArtifacts "add2vals.tar.gz"
 
-                    sh '''
-                    apt-get update
-                    apt-get install -y sshpass openssh-client
-                    which sshpass
-                    '''
-
-                    sh '''
-                    sshpass -p "''' + EC2_PASSWORD + '''" scp -o StrictHostKeyChecking=no add2vals.tar.gz ''' + EC2_USER + '''@''' + EC2_HOST + ''':~/
-                    '''
-
                     sh """
-                        if [ -d "sources/dist" ]; then
-                            echo "File dist berhasil dibuat"
-                     else
-                            echo "File dist tidak ditemukan"
-                            exit 1
-                        fi
+                        docker run --rm -v \$(pwd):/src --user root ubuntu bash -c '
+                            apt-get update && 
+                            apt-get install -y sshpass openssh-client && 
+                            sshpass -p "${EC2_PASSWORD}" scp -o StrictHostKeyChecking=no /src/add2vals.tar.gz ${EC2_USER}@${EC2_HOST}:~/'
                     """
+
+                    echo "Deployment selesai, aplikasi tersedia di http://${EC2_HOST}"
             // }
             }
             
