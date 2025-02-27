@@ -54,6 +54,16 @@ node {
                 
                 // Menambahkan pengecekan keberadaan file dist
                     sh "ls -la sources/dist"
+
+                    sh "cd source/dist"
+                    
+                    archiveArtifacts "add2vals"
+
+                    // sh '''
+                    // sshpass -p "''' + EC2_PASSWORD + '''" scp -o StrictHostKeyChecking=no deploy.tar.gz ''' + EC2_USER + '''@''' + EC2_HOST + ''':~/
+                    // '''
+
+                    sh 
                     sh """
                         if [ -d "sources/dist" ]; then
                             echo "File dist berhasil dibuat"
