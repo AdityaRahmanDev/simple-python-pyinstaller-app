@@ -37,7 +37,6 @@ node {
             
             // Membuat direktori dengan nama BUILD_ID
             dir(path: env.BUILD_ID) {
-                docker.image('cdrx/pyinstaller-linux:python2').inside {
                 // Mengambil kembali hasil kompilasi yang telah di-stash
                     unstash(name: 'compiled-results')
                 // Membuat executable menggunakan PyInstaller
@@ -54,7 +53,6 @@ node {
                             exit 1
                         fi
                     """
-                }
             }
             
             // Jika berhasil, arsipkan hasil build dan bersihkan direktori
