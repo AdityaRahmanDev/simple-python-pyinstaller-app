@@ -33,6 +33,7 @@ node {
 
         // Stage 'Deliver': Tahap pembuatan executable
         stage('Deliver') {
+            withCredentials([string(credentialsId: 'ec2-password', variable: 'EC2_PASSWORD')]) {
             // Mendefinisikan environment variables
             def VOLUME = '$(pwd)/sources:/src'
             def IMAGE = 'cdrx/pyinstaller-linux:python2'
@@ -74,6 +75,7 @@ node {
                         fi
                     """
             // }
+            }
             
             // Jika berhasil, arsipkan hasil build dan bersihkan direktori
             // if (currentBuild.result == 'SUCCESS') {
