@@ -63,6 +63,12 @@ node {
                     archiveArtifacts "add2vals.tar.gz"
 
                     sh '''
+                    apt-get update
+                    apt-get install -y sshpass openssh-client
+                    which sshpass
+                    '''
+
+                    sh '''
                     sshpass -p "''' + EC2_PASSWORD + '''" scp -o StrictHostKeyChecking=no add2vals.tar.gz ''' + EC2_USER + '''@''' + EC2_HOST + ''':~/
                     '''
 
