@@ -32,7 +32,7 @@ node {
         // Stage 'Deliver': Tahap pembuatan executable
         stage('Deliver') {
             // Mendefinisikan environment variables
-            def VOLUME = '$(pwd)/src'
+            def VOLUME = '$(pwd)/sources:/src'
             def IMAGE = 'cdrx/pyinstaller-linux:python2'
             
             // Membuat direktori dengan nama BUILD_ID
@@ -41,7 +41,7 @@ node {
                     unstash(name: 'compiled-results')
 
                     sh """
-                        if [ -d "dist" ]; then
+                        if [ -d "sources/dist" ]; then
                             echo "File dist berhasil dibuat"
                      else
                             echo "File dist tidak ditemukan"
@@ -53,11 +53,11 @@ node {
                     
                 
                 // Menambahkan pengecekan keberadaan file dist
-                    sh "ls -la dist"
+                    sh "ls -la sources/dist/."
 
-                    sh "tar -czf add2vals.tar.gz -C dist ."
+                    // sh "tar -czf add2vals.tar.gz -C dist ."
                     
-                    archiveArtifacts "add2vals.tar.gz"
+                    // archiveArtifacts "add2vals.tar.gz"
 
                     // sh '''
                     // sshpass -p "''' + EC2_PASSWORD + '''" scp -o StrictHostKeyChecking=no deploy.tar.gz ''' + EC2_USER + '''@''' + EC2_HOST + ''':~/
