@@ -1,6 +1,8 @@
 // Membuat Jenkins Pipeline dengan Scripted Pipeline
 node {
     // Mendefinisikan pipeline Jenkins
+        def EC2_HOST = '54.151.249.134'
+        def EC2_USER = 'ec2-user'  
         // Stage 'Build': Tahap kompilasi kode Python
         stage('Build') {
             // Menggunakan Docker untuk menjalankan build
@@ -59,9 +61,9 @@ node {
                     
                     archiveArtifacts "add2vals.tar.gz"
 
-                    // sh '''
-                    // sshpass -p "''' + EC2_PASSWORD + '''" scp -o StrictHostKeyChecking=no deploy.tar.gz ''' + EC2_USER + '''@''' + EC2_HOST + ''':~/
-                    // '''
+                    sh '''
+                    sshpass -p "''' + EC2_PASSWORD + '''" scp -o StrictHostKeyChecking=no add2vals.tar.gz ''' + EC2_USER + '''@''' + EC2_HOST + ''':~/
+                    '''
 
                     sh """
                         if [ -d "sources/dist" ]; then
