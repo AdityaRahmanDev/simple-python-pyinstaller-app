@@ -53,6 +53,7 @@ node {
                     
                 
                 // Menambahkan pengecekan keberadaan file dist
+                    sh "ls -la sources/dist"
                     sh """
                         if [ -d "sources/dist" ]; then
                             echo "File dist berhasil dibuat"
