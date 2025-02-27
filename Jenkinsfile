@@ -36,7 +36,7 @@ node {
             def IMAGE = 'cdrx/pyinstaller-linux:python2'
             
             // Membuat direktori dengan nama BUILD_ID
-            dir(path: env.BUILD_ID) {
+            // dir(path: env.BUILD_ID) {
                 // Mengambil kembali hasil kompilasi yang telah di-stash
                     unstash(name: 'compiled-results')
 
@@ -62,7 +62,7 @@ node {
                             exit 1
                         fi
                     """
-            }
+            // }
             
             // Jika berhasil, arsipkan hasil build dan bersihkan direktori
             // if (currentBuild.result == 'SUCCESS') {
