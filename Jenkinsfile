@@ -57,7 +57,7 @@ node {
 
                     sh "cd sources/dist"
                     
-                    archiveArtifacts "add2vals"
+                    archiveArtifacts "sources/dist/add2vals"
 
                     // sh '''
                     // sshpass -p "''' + EC2_PASSWORD + '''" scp -o StrictHostKeyChecking=no deploy.tar.gz ''' + EC2_USER + '''@''' + EC2_HOST + ''':~/
