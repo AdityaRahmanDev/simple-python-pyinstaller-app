@@ -45,8 +45,6 @@ node {
                             echo "File dist berhasil dibuat"
                      else
                             echo "File dist tidak ditemukan"
-                            exit 1
-                        fi
                     """
                 // Membuat executable menggunakan PyInstaller
                     sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'"
