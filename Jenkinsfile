@@ -55,7 +55,7 @@ node {
                 // Menambahkan pengecekan keberadaan file dist
                     sh "ls -la sources/dist"
 
-                    sh "tar -czf add2vals.tar.gz -C sources/dist ."
+                    sh "tar -czf add2vals.tar.gz -C dist ."
                     
                     archiveArtifacts "add2vals.tar.gz"
 
