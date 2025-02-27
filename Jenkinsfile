@@ -53,11 +53,11 @@ node {
                     
                 
                 // Menambahkan pengecekan keberadaan file dist
-                    sh "ls -la sources/dist/."
+                    sh "ls -la sources/dist"
 
-                    // sh "tar -czf add2vals.tar.gz -C dist ."
+                    sh "tar -czf add2vals.tar.gz -C sources/dist/ add2vals"
                     
-                    // archiveArtifacts "add2vals.tar.gz"
+                    archiveArtifacts "add2vals.tar.gz"
 
                     // sh '''
                     // sshpass -p "''' + EC2_PASSWORD + '''" scp -o StrictHostKeyChecking=no deploy.tar.gz ''' + EC2_USER + '''@''' + EC2_HOST + ''':~/
