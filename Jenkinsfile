@@ -51,7 +51,7 @@ node {
                         fi
                     """
                 // Membuat executable menggunakan PyInstaller
-                    sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'"
+                    sh "docker run --rm --user root -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'"
                     // sh 'pyinstaller --onefile sources/add2vals.py'
                     
                 
