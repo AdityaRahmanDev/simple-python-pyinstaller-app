@@ -63,8 +63,8 @@ node {
                     archiveArtifacts "add2vals.tar.gz"
 
                     sh '''
-                    sudo apt-get update
-                    sudo apt-get install -y sshpass openssh-client
+                    apt-get update
+                    apt-get install -y sshpass openssh-client
                     which sshpass
                     '''
 
