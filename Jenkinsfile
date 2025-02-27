@@ -8,7 +8,7 @@ node {
                 // Mengkompilasi file Python menjadi bytecode (.pyc)
                 sh 'python -m py_compile sources/add2vals.py sources/calc.py'
                 // Menyimpan hasil kompilasi untuk digunakan di stage selanjutnya
-                // stash(name: 'compiled-results', includes: 'sources/*.py*')
+                stash(name: 'compiled-results', includes: 'sources/*.py*')
             }
         }
 
@@ -39,7 +39,7 @@ node {
             dir(path: env.BUILD_ID) {
                 docker.image('cdrx/pyinstaller-linux:python2').inside {
                 // Mengambil kembali hasil kompilasi yang telah di-stash
-                    // unstash(name: 'compiled-results')
+                    unstash(name: 'compiled-results')
                 // Membuat executable menggunakan PyInstaller
                     sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F add2vals.py'"
                     // sh 'pyinstaller --onefile sources/add2vals.py'
