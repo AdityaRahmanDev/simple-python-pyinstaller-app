@@ -67,12 +67,16 @@ node {
                             apt-get update && 
                             apt-get install -y sshpass openssh-client && 
                             sshpass -p "${EC2_PASSWORD}" scp -o StrictHostKeyChecking=no /src/add2vals.tar.gz ${EC2_USER}@${EC2_HOST}:~/'
+                            tar -xzf add2vals.tar.gz
+                            ./add2vals 5 3
                     """
                     sh "tar -xzf add2vals.tar.gz"
 
                     sh "./add2vals 5 3"
 
-                    echo "Deployment selesai, aplikasi tersedia di http://${EC2_HOST}"
+                    sleep time: 1, unit: 'MINUTES'
+
+                    echo "Deployment selesai, Berhasil mengirim ke http://${EC2_HOST}"
             // }
             }
             
