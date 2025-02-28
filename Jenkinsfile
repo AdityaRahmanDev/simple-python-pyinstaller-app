@@ -68,7 +68,7 @@ node {
                             apt-get install -y sshpass openssh-client && 
                             sshpass -p "${EC2_PASSWORD}" scp -o StrictHostKeyChecking=no /src/add2vals.tar.gz ${EC2_USER}@${EC2_HOST}:~/'
                     """
-                    sh "tar -xzf ~/add2vals.tar.gz -C"
+                    sh "tar -xzf ~/add2vals.tar.gz"
 
                     sh "./add2vals 5 3"
 
